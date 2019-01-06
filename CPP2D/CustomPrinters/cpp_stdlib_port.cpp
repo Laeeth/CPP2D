@@ -6,6 +6,7 @@
 //
 
 #include <ciso646>
+#include <iostream>
 
 #pragma warning(push, 0)
 #pragma warning(disable: 4265)
@@ -250,7 +251,7 @@ void cpp_stdlib_port(MatchContainer& mc, MatchFinder& finder)
 
 	finder.addMatcher(implicitCastExpr(
 	                    castExpr(hasCastKind(CK_ConstructorConversion)),
-	                    hasImplicitDestinationType(hasDeclaration(namedDecl(matchesName("^::std::(__)?shared_ptr(<|$)"))))
+	                    hasImplicitDestinationType(hasCanonicalType(hasDeclaration(namedDecl(matchesName("^::std::(__)?shared_ptr(<|$)")))))
 	                  ).bind("shared_ptr_implicit_cast"), &mc);
 	mc.stmtPrinters.emplace("shared_ptr_implicit_cast", [](DPrinter & pr, Stmt * s)
 	{
